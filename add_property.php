@@ -21,8 +21,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($data)) {
     $rent = isset($data['rent']) ? $data['rent'] : 0;
     $address = isset($data['address']) ? $data['address'] : '';
     $city = isset($data['city']) ? $data['city'] : '';
-    $bedrooms = isset($data['bedrooms']) ? (int)$data['bedrooms'] : 0;
-    $bathrooms = isset($data['bathrooms']) ? (int)$data['bathrooms'] : 0;
     $area = isset($data['area']) ? (float)$data['area'] : 0;
     $amenities = isset($data['amenities']) ? $data['amenities'] : '';
     $image_url = isset($data['image_url']) ? $data['image_url'] : '';
@@ -33,8 +31,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($data)) {
     }
 
     // Insert data into database
-    $stmt = $conn->prepare("INSERT INTO properties (title, description, rent, address, city, bedrooms, bathrooms, area, amenities, image_url) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("ssdsiiidss", $title, $description, $rent, $address, $city, $bedrooms, $bathrooms, $area, $amenities, $image_url);
+    $stmt = $conn->prepare("INSERT INTO properties (title, description, rent, address, city, area, amenities, image_url) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("ssdssdss", $title, $description, $rent, $address, $city, $area, $amenities, $image_url);
 
     if ($stmt->execute()) {
         echo json_encode(["status" => "success", "message" => "Property added successfully"]);
